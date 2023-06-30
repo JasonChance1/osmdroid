@@ -1,0 +1,62 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.example.osmdroiddemo'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.osmdroiddemo"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures{
+        dataBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // https://github.com/Blankj/AndroidUtilCode
+    implementation 'com.blankj:utilcodex:1.31.1'
+
+//    //https://github.com/osmdroid/osmdroid/wiki
+//    implementation 'org.osmdroid:osmdroid-android:6.1.13'
+//    //添加了对 WMS 服务器（特别是地理服务器）的基本支持
+//    implementation 'org.osmdroid:osmdroid-wms:6.1.13'
+//    //添加地图锻造支持
+//    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.13'
+//    //添加地图锻造支持
+    implementation 'org.osmdroid:osmdroid-geopackage:6.1.13'
+    implementation 'org.osmdroid:osmdroid-android:6.1.12'
+
+    implementation 'org.osmdroid:osmdroid-wms:6.1.8'
+
+    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.8'
+
+    // https://github.com/li-xiaojun/XPopup
+    implementation 'com.github.li-xiaojun:XPopup:2.9.4'
+}

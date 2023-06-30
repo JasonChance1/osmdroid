@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:text="选择地图"/>
+            <Button
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="定位"/>
+            <CheckBox
+                android:id="@+id/draw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginRight="5dp"
+                android:text="绘制图形"/>
+            <Button
+                android:id="@+id/zoomin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:text="放大"/>
+            <Button
+                android:id="@+id/zoomout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:text="缩小"/>
+        </LinearLayout>
+
+        <!--            //地图选择-->
+        <LinearLayout
+            android:id="@+id/optionsBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:background="#fc9">
+            <CheckBox
+                android:id="@+id/gaode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="高德"/>
+            <CheckBox
+                android:id="@+id/skyTile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-影像底图"/>
+            <CheckBox
+                android:id="@+id/skyTileLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-影像注记"/>
+
+            <CheckBox
+                android:id="@+id/skyVector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-矢量底图"/>
+            <CheckBox
+                android:id="@+id/skyVectorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-矢量标注"/>
+            <CheckBox
+                android:id="@+id/skyTerrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-地形晕染"/>
+            <CheckBox
+                android:id="@+id/skyTerrainLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-地形标注"/>
+            <CheckBox
+                android:id="@+id/skyBoundary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-全境"/>
+            <CheckBox
+                android:id="@+id/googleTerrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天地图-谷歌"/>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <com.example.osmdroiddemo.utils.CustomPaintingSurface
+                android:id="@+id/customSurface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#0000"
+                android:visibility="visible"/>
+            <org.osmdroid.views.MapView
+                android:layout_marginTop="10dp"
+                android:id="@+id/mapview"
+                android:layout_weight="1"
+                tilesource="Mapnik"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/freeDraw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:text="选点绘制"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</layout>
