@@ -23,6 +23,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:replace="android:allowBackup">
         <activity
+            android:name="com.example.osmdroiddemo.utils.BaseActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.osmdroiddemo.other.XPopActivity"
             android:exported="false">
             <meta-data

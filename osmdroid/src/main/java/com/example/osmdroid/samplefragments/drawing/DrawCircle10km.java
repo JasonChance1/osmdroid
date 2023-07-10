@@ -19,6 +19,8 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
 import static org.osmdroid.samplefragments.events.SampleMapEventListener.df;
 
+import com.example.osmdroid.samplefragments.BaseSampleFragment;
+
 /**
  * created on 12/27/2017.
  *

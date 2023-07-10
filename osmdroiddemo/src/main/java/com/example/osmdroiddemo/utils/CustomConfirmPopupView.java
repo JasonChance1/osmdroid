@@ -11,6 +11,9 @@ import com.lxj.xpopup.impl.ConfirmPopupView;
 import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
 
+/**
+ * 自定义更新界面
+ */
 public class CustomConfirmPopupView extends ConfirmPopupView {
     private Context context;
     private LinearLayout layoutBox;

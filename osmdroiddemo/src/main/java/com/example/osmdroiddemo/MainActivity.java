@@ -1,39 +1,28 @@
 package com.example.osmdroiddemo;
 import android.Manifest;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.osmdroiddemo.databinding.ActivityMainBinding;
+import com.example.osmdroiddemo.other.TileSelectDrawerPopupView;
+import com.example.osmdroiddemo.utils.BaseActivity;
 import com.example.osmdroiddemo.utils.CustomPaintingSurface;
-import com.example.osmdroiddemo.utils.GoogleTileSource;
-import com.example.osmdroiddemo.utils.TransformToGeoPoint;
+import com.example.osmdroiddemo.utils.TileSource;
+import com.example.osmdroiddemo.utils.Screen2GeoPoint;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
-import org.mapsforge.map.layer.TileLayer;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
-import org.osmdroid.tileprovider.MapTileProviderBase;
-import org.osmdroid.tileprovider.MapTileProviderBasic;
-import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.CopyrightOverlay;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
@@ -45,30 +34,20 @@ import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends BaseActivity {
     private MyLocationNewOverlay mLocationOverlay;
     private CompassOverlay mCompassOverlay;
-    private Boolean isHide = true;
     private ActivityMainBinding binding;
-    private MapTileProviderBasic provider = null;
-    private TilesOverlay layer = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
         initView();
-
         bindEvent();
 
-//        Context ctx = this.getApplicationContext();
-//        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-//        Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
         IMapController mapController = binding.mapview.getController();
         mapController.setZoom(18.0);
@@ -76,6 +55,15 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initView() {
+
+        // 缩放按钮
+        binding.mapview.setMultiTouchControls(true);
+        // 最大缩放比例
+        binding.mapview.setMaxZoomLevel(20.0);
+        // 获取权限
+        getPermission();
+        // 设置地图源
+        setMapSources(TileSource.tianDiTuBoundary);
 
         // 添加"我的位置"
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), binding.mapview);
@@ -88,56 +76,43 @@ public class MainActivity extends AppCompatActivity{
         this.mCompassOverlay = new CompassOverlay(this, new InternalCompassOrientationProvider(this), binding.mapview);
         this.mCompassOverlay.enableCompass();
         binding.mapview.getOverlays().add(this.mCompassOverlay);
-
-
-        // 缩放按钮
-        binding.mapview.setMultiTouchControls(true);
-        // 最大缩放比例
-        binding.mapview.setMaxZoomLevel(20.0);
-        getPermission();
-        setMapSources(GoogleTileSource.AutoNaviVector);
-
         binding.customSurface.init(binding.mapview);
     }
 
 
     private void bindEvent(){
         // 绘制图形
-        binding.draw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    binding.customSurface.setVisibility(View.VISIBLE);
-                    binding.draw.setBackgroundColor(Color.BLACK);
-                    final CustomPaintingSurface.Mode[] mode = {CustomPaintingSurface.Mode.Polygon};
-                    new XPopup.Builder(MainActivity.this).asCenterList("选择类型", new String[]{"线", "面","PolygonHole","PolylineAsPath"}, new OnSelectListener() {
-                        @Override
-                        public void onSelect(int position, String text) {
-                            switch (position){
-                                case 0:
-                                    mode[0] = CustomPaintingSurface.Mode.Polyline;
-                                    break;
-                                case 1:
-                                    mode[0] = CustomPaintingSurface.Mode.Polygon;
-                                    break;
-                                case 2:
-                                    mode[0] = CustomPaintingSurface.Mode.PolygonHole;
-                                    break;
-                                case 3:
-                                    mode[0] = CustomPaintingSurface.Mode.PolylineAsPath;
-                                    break;
-                            }
-                            binding.customSurface.setMode(CustomPaintingSurface.Mode.Polygon);
+        binding.draw.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                binding.customSurface.setVisibility(View.VISIBLE);
+                binding.draw.setBackgroundColor(Color.BLACK);
+                final CustomPaintingSurface.Mode[] mode = {CustomPaintingSurface.Mode.Polygon};
+                new XPopup.Builder(MainActivity.this).asCenterList("选择类型", new String[]{"线", "面","PolygonHole","PolylineAsPath"}, new OnSelectListener() {
+                    @Override
+                    public void onSelect(int position, String text) {
+                        switch (position){
+                            case 0:
+                                mode[0] = CustomPaintingSurface.Mode.Polyline;
+                                break;
+                            case 1:
+                                mode[0] = CustomPaintingSurface.Mode.Polygon;
+                                break;
+                            case 2:
+                                mode[0] = CustomPaintingSurface.Mode.PolygonHole;
+                                break;
+                            case 3:
+                                mode[0] = CustomPaintingSurface.Mode.PolylineAsPath;
+                                break;
                         }
-                    }).show();
+                        binding.customSurface.setMode(CustomPaintingSurface.Mode.Polygon);
+                    }
+                }).show();
 
-                }else{
-                    binding.draw.setBackgroundColor(Color.WHITE);
-                    binding.customSurface.setVisibility(View.GONE);
-                }
+            }else{
+                binding.draw.setBackgroundColor(Color.WHITE);
+                binding.customSurface.setVisibility(View.GONE);
             }
         });
-
 
         // 定位
         binding.location.setOnClickListener(v-> location());
@@ -147,64 +122,11 @@ public class MainActivity extends AppCompatActivity{
 
         //切换图源
         binding.btn.setOnClickListener(v->{
-            isHide = !isHide;
-            if(!isHide){
-                binding.optionsBox.setVisibility(View.VISIBLE);
-                binding.gaode.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-                    if(isChecked) addLayer(GoogleTileSource.AutoNaviVector);
-                    else {
-                        binding.mapview.getOverlays().remove(layer);
-                        ToastUtils.showLong("移除高德地图");
-                    }
-                    binding.mapview.invalidate();
-
-                }));
-
-                binding.skyTile.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if(isChecked){
-                        addLayer(GoogleTileSource.tianDiTuSatellite);
-                    }else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                    ToastUtils.showLong(String.valueOf(isChecked));
-                });
-
-                binding.skyTileLabel.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-
-                    if(isChecked) addLayer(GoogleTileSource.tianDiTuSatelliteLabel);
-                    else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                }));
-                binding.skyVector.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-
-                    if(isChecked) addLayer(GoogleTileSource.tianDiTuVector);
-                    else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                }));
-                binding.skyVectorLabel.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-
-                    if(isChecked) addLayer(GoogleTileSource.tianDiTuVectorLabel);
-                    else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                }));
-                binding.skyTerrain.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-
-                    if(isChecked) addLayer(GoogleTileSource.tianDiTuTerrain);
-                    else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                }));
-                binding.skyTerrainLabel.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-
-                    if(isChecked) addLayer(GoogleTileSource.tianDiTuTerrainLabel);
-                    else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                }));
-                binding.skyBoundary.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-
-                    if(isChecked) addLayer(GoogleTileSource.tianDiTuBoundary);
-                    else binding.mapview.getOverlays().remove(layer);
-                    binding.mapview.invalidate();
-                }));
-            }else binding.optionsBox.setVisibility(View.GONE);
+            TileSelectDrawerPopupView customDrawerPopupView = new TileSelectDrawerPopupView(MainActivity.this,binding.mapview);
+            new XPopup.Builder(MainActivity.this).popupPosition(PopupPosition.Right)
+                    .hasStatusBar(true)
+                    .asCustom(customDrawerPopupView)
+                    .show();
         });
 
         binding.freeDraw.setOnClickListener(v -> {
@@ -212,14 +134,12 @@ public class MainActivity extends AppCompatActivity{
             binding.mapview.getOverlayManager().add(overlay);
         });
     }
-
     private void location(){
         //定位
         binding.mapview.getController().setCenter(mLocationOverlay.getMyLocation());
         binding.mapview.getController().setZoom(10);
 
     }
-
     public static class MyLocationOverlayWithClick extends MyLocationNewOverlay{
 
         public MyLocationOverlayWithClick(MapView mapView) {
@@ -229,7 +149,7 @@ public class MainActivity extends AppCompatActivity{
         public boolean onSingleTapConfirmed(MotionEvent e, MapView map) {
 
             // 通过点击的x,y转换为经纬度坐标，并存放到IGeoPoint中
-            IGeoPoint iGeoPoint = TransformToGeoPoint.transform(map,e.getX(),e.getY());
+            IGeoPoint iGeoPoint = Screen2GeoPoint.transform(map,e.getX(),e.getY());
 
             if(iGeoPoint!=null){
                 List<IGeoPoint> points = new ArrayList<>();
@@ -252,19 +172,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-
-
-    private TilesOverlay addLayer(OnlineTileSourceBase o){
-        provider = new MapTileProviderBasic(MainActivity.this,o);
-        TilesOverlay layer = new TilesOverlay(provider, MainActivity.this);
-        layer.setLoadingBackgroundColor(Color.TRANSPARENT);
-        layer.setLoadingLineColor(Color.TRANSPARENT);
-        binding.mapview.getOverlays().add(layer);
-        return  layer;
-    }
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -284,41 +191,20 @@ public class MainActivity extends AppCompatActivity{
             }
         }
     }
-
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        map.onPause();
-//    }
-
-        private void getPermission () {
-            String[] permissions = {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            if (PermissionUtils.isGranted(permissions[0]) && PermissionUtils.isGranted(permissions[1])) {
-                //授权后的操作
-            } else {
-                // 权限许可请求
-                PermissionUtils.permission(permissions)
-                        .callback(new PermissionUtils.FullCallback() {
-                            @Override
-                            public void onGranted(List<String> granted) {
-                                getPermission();
-                            }
-
-                            @Override
-                            public void onDenied(List<String> deniedForever, List<String> denied) {
-                                // 处理被拒绝权限的逻辑
-                            }
-                        })
-                        .request();
+    private void getPermission(){
+        onRequestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION},new onPermissionCallbackListener(){
+            @Override
+            public void onGranted() {
+                Log.e("MainActivity", "onGranted: ");
             }
-        }
+            @Override
+            public void onDenied(List<String> deniedPermissions) {
 
-
+            }
+        });
+    }
 }
 
 

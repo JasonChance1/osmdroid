@@ -15,6 +15,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:textAllCaps="false"
                 android:text="选择地图"/>
             <Button
                 android:id="@+id/location"
@@ -50,64 +51,64 @@
         </LinearLayout>
 
         <!--            //地图选择-->
-        <LinearLayout
-            android:id="@+id/optionsBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:background="#fc9">
-            <CheckBox
-                android:id="@+id/gaode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="高德"/>
-            <CheckBox
-                android:id="@+id/skyTile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-影像底图"/>
-            <CheckBox
-                android:id="@+id/skyTileLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-影像注记"/>
+<!--        <LinearLayout-->
+<!--            android:id="@+id/optionsBox"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="10dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:orientation="vertical"-->
+<!--            android:background="#fc9">-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/gaode"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="高德"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyTile"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-影像底图"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyTileLabel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-影像注记"/>-->
 
-            <CheckBox
-                android:id="@+id/skyVector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-矢量底图"/>
-            <CheckBox
-                android:id="@+id/skyVectorLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-矢量标注"/>
-            <CheckBox
-                android:id="@+id/skyTerrain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-地形晕染"/>
-            <CheckBox
-                android:id="@+id/skyTerrainLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-地形标注"/>
-            <CheckBox
-                android:id="@+id/skyBoundary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-全境"/>
-            <CheckBox
-                android:id="@+id/googleTerrain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天地图-谷歌"/>
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyVector"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-矢量底图"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyVectorLabel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-矢量标注"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyTerrain"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-地形晕染"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyTerrainLabel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-地形标注"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/skyBoundary"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-全境"/>-->
+<!--            <CheckBox-->
+<!--                android:id="@+id/googleTerrain"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="天地图-谷歌"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
 
         <RelativeLayout

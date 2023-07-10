@@ -25,14 +25,13 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.osmdroiddemo.other.XPopActivity;
+
 
 public class MainActivity1 extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     public static final String TAG = "OSM";
-
     /**
      * Called when the activity is first created.
      */
@@ -51,6 +50,9 @@ public class MainActivity1 extends AppCompatActivity implements AdapterView.OnIt
         list.add("MainActivity");
         list.add("绘制图形");
         list.add("其他");
+        list.add("颜色选择器");
+
+
 //
 //        list.add("Report a Bug");
 //        list.add("Settings");
@@ -91,6 +93,9 @@ public class MainActivity1 extends AppCompatActivity implements AdapterView.OnIt
                 break;
             case 6:
                 this.startActivity(new Intent(this, XPopActivity.class));
+                break;
+            case 7:
+
                 break;
 //            case 5:
 //                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/osmdroid/osmdroid/issues/new"));

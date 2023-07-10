@@ -69,6 +69,7 @@ public class DrawPolygon extends BaseSampleFragment implements View.OnClickListe
         mRotationGestureOverlay.setEnabled(true);
         mMapView.setMultiTouchControls(true);
         mMapView.getOverlayManager().add(mRotationGestureOverlay);
+
         panning = v.findViewById(R.id.enablePanning);
         panning.setOnClickListener(this);
         panning.setBackgroundColor(Color.BLACK);

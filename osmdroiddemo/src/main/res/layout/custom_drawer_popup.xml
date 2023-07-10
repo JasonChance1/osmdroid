@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/circle_shape1"
+    android:layout_marginBottom="10dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/optionsBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="#fc9">
+        <CheckBox
+            android:id="@+id/gaode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="高德"/>
+        <CheckBox
+            android:id="@+id/skyTile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-影像底图"/>
+        <CheckBox
+            android:id="@+id/skyTileLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-影像注记"/>
+
+        <CheckBox
+            android:id="@+id/skyVector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-矢量底图"/>
+        <CheckBox
+            android:id="@+id/skyVectorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-矢量标注"/>
+        <CheckBox
+            android:id="@+id/skyTerrain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-地形晕染"/>
+        <CheckBox
+            android:id="@+id/skyTerrainLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-地形标注"/>
+        <CheckBox
+            android:id="@+id/skyBoundary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天地图-全境"/>
+        <CheckBox
+            android:id="@+id/wmtsTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="wmts测试"/>
+
+    </LinearLayout>
+
+</LinearLayout>

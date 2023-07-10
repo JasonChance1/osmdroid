@@ -26,6 +26,8 @@ import org.osmdroid.views.overlay.CopyrightOverlay;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.osmdroid.R;
+
 public abstract class BaseSampleFragment extends Fragment {
     private static int MENU_LAST_ID = Menu.FIRST; // Always set to last unused id
     public static final String TAG = "osmBaseFrag";

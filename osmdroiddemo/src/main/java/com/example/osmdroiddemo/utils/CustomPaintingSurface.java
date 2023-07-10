@@ -22,6 +22,7 @@ import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.milestones.MilestoneBitmapDisplayer;
 import org.osmdroid.views.overlay.milestones.MilestoneManager;
 import org.osmdroid.views.overlay.milestones.MilestonePathDisplayer;
@@ -139,26 +140,23 @@ public class CustomPaintingSurface extends View {
                     case Polyline:
                     case PolylineAsPath:
                         final boolean asPath = drawingMode == Mode.PolylineAsPath;
-                        final int color = Color.argb(100, 100, 100, 100);
+                        final int color = Color.argb(255, 255, 0, 0);
                         final Polyline line = new Polyline(map);
                         line.usePath(true);
                         line.setInfoWindow(
                                 new BasicInfoWindow(org.osmdroid.library.R.layout.bonuspack_bubble, map));
-                        line.getOutlinePaint().setColor(color);
-                        line.setTitle("This is a polyline" + (asPath ? " as Path" : ""));
+                        line.getOutlinePaint().setColor(Color.WHITE);
+                        line.setTitle("折线" + (asPath ? " as Path" : ""));
                         line.setPoints(geoPoints);
                         line.showInfoWindow();
                         line.getOutlinePaint().setStrokeCap(Paint.Cap.ROUND);
                         //example below
-                        /*
-                        line.setOnClickListener(new Polyline.OnClickListener() {
-                            @Override
-                            public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                                Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
-                                return false;
-                            }
+
+                        line.setOnClickListener((polyline, mapView, eventPos) -> {
+                            line.showInfoWindow();
+                            Toast.makeText(mapView.getContext(), "点数量 " + polyline.getActualPoints().size(), Toast.LENGTH_LONG).show();
+                            return false;
                         });
-                        */
 
                         if (withArrows) {
                             final Paint arrowPaint = new Paint();
@@ -188,7 +186,7 @@ public class CustomPaintingSurface extends View {
                                 new BasicInfoWindow(org.osmdroid.library.R.layout.bonuspack_bubble, map));
                         polygon.getFillPaint().setColor(Color.argb(75, 255, 0, 0));
                         polygon.setPoints(geoPoints);
-                        polygon.setTitle("A sample polygon");
+                        polygon.setTitle("图形样例");
                         polygon.showInfoWindow();
                         if (withArrows) {
                             final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), org.osmdroid.library.R.drawable.round_navigation_white_48);
@@ -199,12 +197,14 @@ public class CustomPaintingSurface extends View {
                             ));
                             polygon.setMilestoneManagers(managers);
                         }
+
+
                         polygon.setOnClickListener(new Polygon.OnClickListener() {
                             @Override
                             public boolean onClick(Polygon polygon, MapView mapView, GeoPoint eventPos) {
                                 lastPolygon = polygon;
                                 polygon.onClickDefault(polygon, mapView, eventPos);
-                                Toast.makeText(mapView.getContext(), "polygon with " + polygon.getActualPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mapView.getContext(), "点击图形", Toast.LENGTH_LONG).show();
                                 return false;
                             }
                         });

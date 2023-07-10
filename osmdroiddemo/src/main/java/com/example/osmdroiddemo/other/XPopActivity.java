@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.example.osmdroiddemo.R;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
 
@@ -29,13 +30,18 @@ public class XPopActivity extends AppCompatActivity {
                     public void onConfirm() {
 
                     }
-                }, new OnCancelListener() {
-                    @Override
-                    public void onCancel() {
+                }, () -> {
 
-                    }
                 },false,R.layout.custom_asconfirm).show();
             }
+        });
+
+        button1.setOnClickListener(v->{
+//            new XPopup.Builder(XPopActivity.this)
+//                    .popupPosition(PopupPosition.Right)
+//                    .hasStatusBar(true)
+//                    .asCustom(new CustomDrawerPopupView(XPopActivity.this))
+//                    .show();
         });
     }
 }
